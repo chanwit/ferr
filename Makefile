@@ -5,6 +5,9 @@ FLUX_VERSION=0.2.1
 KOMPOSE_VERSION=1.22.0
 KIND_VERSION=0.9.0
 STERN_VERSION=1.11.0
+KUBECTL_VERSION=1.19.3
+SKAFFOLD_VERSION=1.16.0
+PACK_CLI=0.14.2
 
 all: test build-linux
 
@@ -64,6 +67,11 @@ download-bins-linux:
 	wget https://github.com/kubernetes-sigs/kind/releases/download/v$(KIND_VERSION)/kind-linux-amd64 \
 		&& mv kind-linux-amd64 dist-linux/bin/kind \
 		&& chmod +x dist-linux/bin/kind	
+	# kubectl
+	wget https://storage.googleapis.com/kubernetes-release/release/v$(KUBECTL_VERSION)/bin/linux/amd64/kubectl \
+		&& mv kubectl dist-linux/bin/ \
+		&& chmod +x dist-linux/bin/kubectl
+
 	# stern 1.11.0
 	wget https://github.com/wercker/stern/releases/download/$(STERN_VERSION)/stern_linux_amd64 \
 		&& mv stern_linux_amd64 dist-linux/bin/stern \
@@ -109,6 +117,10 @@ download-bins-darwin:
 	wget https://github.com/kubernetes-sigs/kind/releases/download/v$(KIND_VERSION)/kind-darwin-amd64 \
 		&& mv kind-darwin-amd64 dist-darwin/bin/kind \
 		&& chmod +x dist-darwin/bin/kind
+	# kubectl
+	wget https://storage.googleapis.com/kubernetes-release/release/v$(KUBECTL_VERSION)/bin/darwin/amd64/kubectl \
+		&& mv kubectl dist-darwin/bin/ \
+		&& chmod +x dist-darwin/bin/kubectl
 	# stern 1.11.0
 	wget https://github.com/wercker/stern/releases/download/$(STERN_VERSION)/stern_darwin_amd64 \
 		&& mv stern_darwin_amd64 dist-darwin/bin/stern \
@@ -147,6 +159,9 @@ download-bins-windows:
 	# kind 0.9.0
 	wget https://github.com/kubernetes-sigs/kind/releases/download/v$(KIND_VERSION)/kind-windows-amd64 \
 		&& mv kind-windows-amd64 dist-windows/bin/kind.exe
+	# kubectl
+	wget https://storage.googleapis.com/kubernetes-release/release/v$(KUBECTL_VERSION)/bin/darwin/amd64/kubectl.exe \
+		&& mv kubectl.exe dist-windows/bin/
 	# stern 1.11.0
 	wget https://github.com/wercker/stern/releases/download/$(STERN_VERSION)/stern_windows_amd64.exe \
 		&& mv stern_windows_amd64.exe dist-windows/bin/stern.exe
@@ -163,3 +178,7 @@ pack-windows: build-windows
 
 	cd build \
 	&& ./warp-packer --arch windows-x64 --input_dir dist-windows --exec launch.cmd --output ferr-windows-amd64.exe
+
+download: download-bins-linux download-bins-darwin download-bins-windows
+
+dist: pack-linux pack-darwin pack-windows

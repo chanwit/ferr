@@ -57,6 +57,7 @@ func build(param *BuildParam) error {
 		return err
 	}
 
+	// TODO: check if context has kind- prefix, if so load images directly to the cluster
 	for _, image := range images {
 		err := script.Run("kind", "load", "docker-image", image)
 		if err != nil {

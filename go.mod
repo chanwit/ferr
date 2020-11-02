@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.1.1
+	github.com/briandowns/spinner v1.11.1
 	github.com/chanwit/script v0.0.0-20201031145246-11f4a5392abc
 	github.com/cli/cli v1.2.0
 	github.com/mattn/go-shellwords v1.0.10

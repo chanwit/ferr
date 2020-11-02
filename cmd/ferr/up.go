@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/briandowns/spinner"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -123,15 +124,30 @@ func up(param *UpParam) error {
 	script.Run(GIT, "commit", "-m", "add application")
 	script.Run(GIT, "push", param.GitRemoteName, param.GitBranch, "-u")
 
+	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)  // Build our new spinner
+	s.Suffix = " waiting for flux reconciliation ..."
+	s.Start()
 	time.Sleep(1 * time.Second)
-
-	script.Run("flux", "reconcile", "kustomization", "flux-system", "--with-source")
+	script.Exec("flux", "reconcile", "kustomization", "flux-system", "--with-source").Run()
+	s.Stop()
 
 	// get all images
 	// load into kind
 	// script.Run("kubectl", "logs", "deployment/podinfo", "-f")
 
 	if detach == false {
+		services, err := getServicesFromComposeFile(composeFilename)
+		if err != nil {
+			return err
+		}
+
+		for _, service := range services {
+			s.Suffix = " waiting for " + service + " to start ..."
+			s.Start()
+			script.Exec("kubectl", "wait", "--for=condition=Ready", "pod", "-l", "io.kompose.service=" + service).Run()
+			s.Stop()
+		}
+
 		return script.Run("stern", ".*")
 	}
 
