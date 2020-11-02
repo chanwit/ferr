@@ -1,2 +1,3 @@
-# gow
-GitOps-Ready Workflow
+# ferr
+
+A GitOps-ready Workflow CLI for Developers
