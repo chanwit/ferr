@@ -100,8 +100,8 @@ download-bins-darwin:
 	mkdir -p build/dist-darwin/bin
 	cd build
 	# gh cli 1.2.0
-	wget -O- https://github.com/cli/cli/releases/download/v$(GH_VERSION)/gh_$(GH_VERSION)_darwin_amd64.tar.gz \
-		| tar xzf - --strip-components=2 gh_$(GH_VERSION)_darwin_amd64/bin/gh && mv gh dist-darwin/bin
+	wget -O- https://github.com/cli/cli/releases/download/v$(GH_VERSION)/gh_$(GH_VERSION)_macOS_amd64.tar.gz \
+		| tar xzf - --strip-components=2 gh_$(GH_VERSION)_macOS_amd64/bin/gh && mv gh dist-darwin/bin
 	# docker-compose 1.27.4
 	wget https://github.com/docker/compose/releases/download/$(COMPOSE_VERSION)/docker-compose-Darwin-x86_64 \
 		&& mv docker-compose-Darwin-x86_64 dist-darwin/bin/docker-compose \
@@ -149,7 +149,7 @@ download-bins-windows:
 		&& unzip -p gh_1.2.0_windows_amd64.zip bin/gh.exe > dist-windows/bin/gh.exe
 	# docker-compose 1.27.4
 	wget https://github.com/docker/compose/releases/download/$(COMPOSE_VERSION)/docker-compose-Windows-x86_64.exe \
-		&& mv docker-compose-Windows-x86_64.exe dist-darwin/bin/docker-compose.exe
+		&& mv docker-compose-Windows-x86_64.exe dist-windows/bin/docker-compose.exe
 	# flux 0.2.1
 	wget https://github.com/fluxcd/flux2/releases/download/v$(FLUX_VERSION)/flux_$(FLUX_VERSION)_windows_amd64.zip \
 		&& unzip -p flux_$(FLUX_VERSION)_windows_amd64.zip flux.exe > dist-windows/bin/flux.exe
@@ -160,7 +160,7 @@ download-bins-windows:
 	wget https://github.com/kubernetes-sigs/kind/releases/download/v$(KIND_VERSION)/kind-windows-amd64 \
 		&& mv kind-windows-amd64 dist-windows/bin/kind.exe
 	# kubectl
-	wget https://storage.googleapis.com/kubernetes-release/release/v$(KUBECTL_VERSION)/bin/darwin/amd64/kubectl.exe \
+	wget https://storage.googleapis.com/kubernetes-release/release/v$(KUBECTL_VERSION)/bin/windows/amd64/kubectl.exe \
 		&& mv kubectl.exe dist-windows/bin/
 	# stern 1.11.0
 	wget https://github.com/wercker/stern/releases/download/$(STERN_VERSION)/stern_windows_amd64.exe \
