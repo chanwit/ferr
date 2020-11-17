@@ -1,3 +1,3 @@
 # ferr
 
-A GitOps-ready Workflow CLI for Developers
+GitOps 2.0 - GitOps Workflow for Developers
